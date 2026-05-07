@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Randolph Men's Club — Event Signup</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green-dark: #1a3a2a;
+    --green-mid: #2d5a3d;
+    --green-light: #4a8c5c;
+    --green-pale: #e8f4ec;
+    --gold: #c9a84c;
+    --gold-light: #f5e8c0;
+    --cream: #faf8f3;
+    --text: #1c2b20;
+    --text-muted: #5a6b5e;
+    --border: #d0ddd3;
+    --white: #ffffff;
+    --shadow: 0 4px 24px rgba(26,58,42,0.10);
+    --shadow-lg: 0 8px 48px rgba(26,58,42,0.16);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--green-dark);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 16px 60px;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 50% at 20% 10%, rgba(74,140,92,0.18) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 40% at 80% 80%, rgba(201,168,76,0.10) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  /* Subtle golf texture */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 32px 32px;
+    pointer-events: none;
+  }
+
+  .page-wrap {
+    width: 100%;
+    max-width: 560px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Header */
+  .club-header {
+    text-align: center;
+    margin-bottom: 8px;
+    padding: 28px 24px 24px;
+    background: var(--green-dark);
+    border-radius: 20px;
+    border: 1px solid rgba(201,168,76,0.2);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .club-logo-ring {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--green-mid), var(--green-light));
+    border: 3px solid var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px;
+    box-shadow: 0 0 0 6px rgba(201,168,76,0.15), var(--shadow);
+  }
+
+  .club-logo-ring svg {
+    width: 36px;
+    height: 36px;
+    fill: var(--gold);
+  }
+
+  .club-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 4px;
+  }
+
+  .event-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.2;
+    margin-bottom: 6px;
+  }
+
+  .event-date {
+    font-size: 14px;
+    color: rgba(255,255,255,0.55);
+    letter-spacing: 0.06em;
+    font-weight: 300;
+  }
+
+  /* Divider */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 14px 0;
+  }
+  .divider::before, .divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(201,168,76,0.3);
+  }
+  .divider-diamond {
+    width: 8px;
+    height: 8px;
+    background: var(--gold);
+    transform: rotate(45deg);
+    opacity: 0.7;
+  }
+
+  /* Card */
+  .card {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 36px 32px;
+    box-shadow: var(--shadow-lg);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--green-mid), var(--gold), var(--green-light));
+  }
+
+  /* Section label */
+  .section-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+
+  /* Field */
+  .field-group {
+    margin-bottom: 22px;
+  }
+
+  label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+
+  .select-wrap {
+    position: relative;
+  }
+
+  .select-wrap::after {
+    content: '';
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 6px solid var(--green-mid);
+    pointer-events: none;
+  }
+
+  select, input[type="text"], input[type="email"], textarea {
+    width: 100%;
+    padding: 12px 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--text);
+    background: var(--cream);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+
+  select {
+    padding-right: 40px;
+    cursor: pointer;
+  }
+
+  select:focus, input:focus, textarea:focus {
+    border-color: var(--green-light);
+    box-shadow: 0 0 0 3px rgba(74,140,92,0.12);
+    background: var(--white);
+  }
+
+  select option[value=""] { color: #999; }
+
+  textarea {
+    resize: vertical;
+    min-height: 72px;
+    line-height: 1.5;
+  }
+
+  /* Package selection */
+  .packages {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+
+  .package-option {
+    position: relative;
+  }
+
+  .package-option input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .package-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 18px;
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.18s;
+    background: var(--cream);
+    user-select: none;
+  }
+
+  .package-label:hover {
+    border-color: var(--green-light);
+    background: var(--green-pale);
+  }
+
+  .package-option input[type="radio"]:checked + .package-label {
+    border-color: var(--green-mid);
+    background: var(--green-pale);
+    box-shadow: 0 0 0 1px var(--green-mid) inset;
+  }
+
+  .package-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .radio-dot {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+    background: var(--white);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.18s;
+  }
+
+  .package-option input[type="radio"]:checked + .package-label .radio-dot {
+    border-color: var(--green-mid);
+    background: var(--green-mid);
+  }
+
+  .package-option input[type="radio"]:checked + .package-label .radio-dot::after {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--white);
+    display: block;
+  }
+
+  .package-info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .package-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.3;
+  }
+
+  .package-desc {
+    font-size: 11.5px;
+    color: var(--text-muted);
+    margin-top: 1px;
+  }
+
+  .package-price {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--green-mid);
+    flex-shrink: 0;
+  }
+
+  .package-option input[type="radio"]:checked + .package-label .package-price {
+    color: var(--green-dark);
+  }
+
+  /* Best value badge */
+  .badge {
+    display: inline-block;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: var(--gold);
+    color: var(--white);
+    padding: 2px 7px;
+    border-radius: 20px;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+
+  /* Stripe note */
+  .stripe-note {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+    padding: 10px 14px;
+    background: var(--green-pale);
+    border-radius: 8px;
+    border: 1px solid var(--border);
+  }
+
+  .stripe-note svg {
+    flex-shrink: 0;
+    opacity: 0.6;
+  }
+
+  /* Submit button */
+  .submit-btn {
+    width: 100%;
+    padding: 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--white);
+    background: linear-gradient(135deg, var(--green-dark) 0%, var(--green-mid) 100%);
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 4px 16px rgba(26,58,42,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .submit-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.1), transparent);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .submit-btn:hover::before { opacity: 1; }
+  .submit-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 24px rgba(26,58,42,0.35); }
+  .submit-btn:active { transform: translateY(0); }
+
+  .submit-btn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+  }
+
+  .submit-amount {
+    background: rgba(255,255,255,0.15);
+    padding: 2px 10px;
+    border-radius: 20px;
+    font-size: 14px;
+  }
+
+  /* Confirmation page */
+  #confirmation-page {
+    display: none;
+    text-align: center;
+    padding: 20px 0;
+  }
+
+  .check-circle {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--green-mid), var(--green-light));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    box-shadow: 0 0 0 12px rgba(74,140,92,0.1);
+  }
+
+  .check-circle svg { width: 36px; height: 36px; stroke: white; fill: none; stroke-width: 2.5; }
+
+  .confirm-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+
+  .confirm-subtitle {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-bottom: 20px;
+  }
+
+  .confirm-summary {
+    background: var(--green-pale);
+    border-radius: 12px;
+    padding: 16px 20px;
+    text-align: left;
+    margin-bottom: 20px;
+    border: 1px solid var(--border);
+  }
+
+  .confirm-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    padding: 4px 0;
+    color: var(--text);
+  }
+
+  .confirm-row span:first-child { color: var(--text-muted); }
+  .confirm-row.total {
+    border-top: 1px solid var(--border);
+    margin-top: 8px;
+    padding-top: 10px;
+    font-weight: 600;
+    font-size: 14px;
+  }
+  .confirm-row.total span:last-child { color: var(--green-dark); }
+
+  .new-signup-btn {
+    font-size: 13px;
+    color: var(--green-mid);
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-decoration: underline;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  /* Error */
+  .error-msg {
+    font-size: 12px;
+    color: #c0392b;
+    margin-top: 5px;
+    display: none;
+  }
+
+  .event-meta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 8px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.60);
+    font-weight: 400;
+    flex-wrap: wrap;
+  }
+
+  .meta-sep {
+    color: var(--gold);
+    opacity: 0.6;
+  }
+
+  @media (max-width: 400px) {
+    .card { padding: 28px 20px; }
+    .event-name { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page-wrap">
+
+  <!-- Club header -->
+  <div class="club-header">
+    <div class="club-logo-ring">
+      <!-- Golf flag icon -->
+      <svg viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
+        <rect x="8" y="4" width="2.5" height="28" rx="1.25"/>
+        <path d="M10.5 6 L26 11 L10.5 16 Z"/>
+        <ellipse cx="18" cy="32" rx="10" ry="2"/>
+      </svg>
+    </div>
+    <div class="club-name">Randolph Men's Club</div>
+    <div class="event-name" id="display-event-name">Weekly Event</div>
+    <div class="event-date" id="display-event-date">Dell Urich Golf Course · Tucson, AZ</div>
+    <div class="event-meta" id="display-meta">
+      <span id="display-start-time">First Tee: 7:50 AM</span>
+      <span class="meta-sep">·</span>
+      <span id="display-director">Tournament Director: John Benge</span>
+    </div>
+  </div>
+
+  <div class="divider"><div class="divider-diamond"></div></div>
+
+  <!-- Card -->
+  <div class="card">
+
+    <!-- Signup form -->
+    <div id="signup-form">
+
+      <!-- Player selection -->
+      <div class="field-group">
+        <div class="section-label">Player Information</div>
+        <label for="player-select">Select Your Name</label>
+        <div class="select-wrap">
+          <select id="player-select">
+            <option value="">— Choose member —</option>
+            <option>Adkisson, John</option>
+            <option>Adler, Bubs</option>
+            <option>Ahern, Michael</option>
+            <option>Alcombright, Daniel</option>
+            <option>Austin, Ron</option>
+            <option>Badghisi, Hamid</option>
+            <option>Beall, John</option>
+            <option>Becker, Todd</option>
+            <option>Belobraydic, John</option>
+            <option>Belobraydic, Jordan</option>
+            <option>Benge, John</option>
+            <option>Berkson, Joel</option>
+            <option>Blanco Padilla, Otilio</option>
+            <option>Boyd, Mike</option>
+            <option>Bradford, Carlton</option>
+            <option>Bradford, Cooper</option>
+            <option>Brown, Eric</option>
+            <option>Brown, Kevin</option>
+            <option>Brushwood, James</option>
+            <option>Camp, Scott</option>
+            <option>Capati, Alvin</option>
+            <option>Cesarek, Greg</option>
+            <option>Chan, Wynn</option>
+            <option>Christian, John</option>
+            <option>Cleveland, Kelly</option>
+            <option>Crebbs, Ben</option>
+            <option>Czechowski, Mike</option>
+            <option>Dalton, Bob</option>
+            <option>Davis, Brent</option>
+            <option>Dmohowski, John</option>
+            <option>Dominguez, Bernie</option>
+            <option>Durazo, Robert</option>
+            <option>Ehret, Nick</option>
+            <option>Eidse, Duncan</option>
+            <option>Elias, Justin</option>
+            <option>Ferenchak, Jack</option>
+            <option>Ferenchak, John</option>
+            <option>Fernandez, Pablo</option>
+            <option>Foard, Adam</option>
+            <option>Francis, Curtis</option>
+            <option>Freedberg, Eric</option>
+            <option>Freeh, Tim</option>
+            <option>Gadea, Manuel</option>
+            <option>Geobel, Garth</option>
+            <option>Gerstad, Del</option>
+            <option>Giclas, Patric</option>
+            <option>Good, Johnse</option>
+            <option>Gusick, Michael</option>
+            <option>Harris, Mark</option>
+            <option>Harvey, Brad</option>
+            <option>Hazelbaker, Duane</option>
+            <option>Holden, John</option>
+            <option>Holly, Stephen</option>
+            <option>Howell, Dustin</option>
+            <option>Hoxsie, Brian</option>
+            <option>Hoyt, John</option>
+            <option>Hudak, John</option>
+            <option>Hulsey, David</option>
+            <option>Hyland, Ken</option>
+            <option>Janicek, Jay</option>
+            <option>Johnson, Chris</option>
+            <option>Johnson, Jeff</option>
+            <option>Kaiser, Kevin</option>
+            <option>Kardonchik-Koren, Amos</option>
+            <option>Kavanaugh, Ken</option>
+            <option>Keith, Doug</option>
+            <option>Kennedy, Jerome</option>
+            <option>Kent, Justin</option>
+            <option>Kippur, Gary</option>
+            <option>Kontak, Brian</option>
+            <option>Lange, Kenneth</option>
+            <option>Larkin, Nathan</option>
+            <option>Larsen, Erik</option>
+            <option>Lashley, Wade</option>
+            <option>LeMaster, Frank</option>
+            <option>Mayo, Greg</option>
+            <option>McCoy, Matt</option>
+            <option>Millay, Todd</option>
+            <option>Mims, Spencer</option>
+            <option>Moore, Dan</option>
+            <option>Mueller, Keegan</option>
+            <option>Mundinger, Richard</option>
+            <option>Nelson, Matt</option>
+            <option>Nichols, Kevin</option>
+            <option>Nottingham, Steve</option>
+            <option>Orndorff, Christopher</option>
+            <option>Orosco, James</option>
+            <option>Osborne, Buzz</option>
+            <option>Pagel, Larry</option>
+            <option>Parvin, Jon</option>
+            <option>Pearson, Brian</option>
+            <option>Phillips, Jim</option>
+            <option>Piet, Johnny</option>
+            <option>Plaga, Gary</option>
+            <option>Plaga, Ryan</option>
+            <option>Plowman, Chip</option>
+            <option>Preston, Robert</option>
+            <option>Pritz, Peter</option>
+            <option>Pucciarelli, Jonathan</option>
+            <option>Quatraro, Gino</option>
+            <option>Quatraro, Paul</option>
+            <option>Rathbun, Cody</option>
+            <option>Reeves, Tom</option>
+            <option>Rickard, Derek</option>
+            <option>Robb, David</option>
+            <option>Rogers, Doug</option>
+            <option>Roy, Bob</option>
+            <option>Royer, John</option>
+            <option>Ruiz, Frank</option>
+            <option>Russell, Rick</option>
+            <option>Santasiere, Al</option>
+            <option>Santasiere, Joe</option>
+            <option>Santasiere, Michael</option>
+            <option>Saunders, Wendell</option>
+            <option>Sawyer, Charles</option>
+            <option>Seaberg, Rick</option>
+            <option>Sharpe, Michael</option>
+            <option>Shipione, Mark</option>
+            <option>Singleton, Jeff</option>
+            <option>Skarison, Ken</option>
+            <option>Smith, Jim</option>
+            <option>Swan, David</option>
+            <option>Throssell, Stanley</option>
+            <option>Townsend, Ned</option>
+            <option>Tschudy, Arne</option>
+            <option>Unger, Joseph</option>
+            <option>Valdez, Norberto</option>
+            <option>Valenzuela, Luis R Sr</option>
+            <option>Wahl, Richard</option>
+            <option>Widen, Sven</option>
+            <option>Williams, Charles</option>
+            <option>Williams, Gerald</option>
+            <option>Wilson, James</option>
+            <option>Wolff, Stuart</option>
+            <option>Wolff, Thomas</option>
+            <option>Wrons, Brett</option>
+            <option>Yeager, Les</option>
+            <option>Zak, Mitch</option>
+          </select>
+        </div>
+        <div class="error-msg" id="err-player">Please select your name.</div>
+      </div>
+
+      <!-- Notes -->
+      <div class="field-group">
+        <label for="player-notes">Notes <span style="font-weight:300;color:var(--text-muted)">(optional)</span></label>
+        <textarea id="player-notes" placeholder="Pairing requests, late arrival, anything for the administrator…"></textarea>
+      </div>
+
+      <!-- Package selection -->
+      <div class="section-label" style="margin-bottom:10px">Select Your Package</div>
+      <div class="packages">
+
+        <div class="package-option">
+          <input type="radio" name="package" id="pkg-all" value="all" data-price="20" data-label="All Games">
+          <label class="package-label" for="pkg-all">
+            <div class="package-left">
+              <div class="radio-dot"></div>
+              <div class="package-info">
+                <div class="package-title">All Games <span class="badge">Best Value</span></div>
+                <div class="package-desc">Event Entry + Gross Skins + Net Skins</div>
+              </div>
+            </div>
+            <div class="package-price">$20</div>
+          </label>
+        </div>
+
+        <div class="package-option">
+          <input type="radio" name="package" id="pkg-net" value="net" data-price="15" data-label="Event + Net Skins">
+          <label class="package-label" for="pkg-net">
+            <div class="package-left">
+              <div class="radio-dot"></div>
+              <div class="package-info">
+                <div class="package-title">Event + Net Skins</div>
+                <div class="package-desc">Event Entry + Net Skins</div>
+              </div>
+            </div>
+            <div class="package-price">$15</div>
+          </label>
+        </div>
+
+        <div class="package-option">
+          <input type="radio" name="package" id="pkg-gross" value="gross" data-price="15" data-label="Event + Gross Skins">
+          <label class="package-label" for="pkg-gross">
+            <div class="package-left">
+              <div class="radio-dot"></div>
+              <div class="package-info">
+                <div class="package-title">Event + Gross Skins</div>
+                <div class="package-desc">Event Entry + Gross Skins</div>
+              </div>
+            </div>
+            <div class="package-price">$15</div>
+          </label>
+        </div>
+
+        <div class="package-option">
+          <input type="radio" name="package" id="pkg-event" value="event" data-price="10" data-label="Event Only">
+          <label class="package-label" for="pkg-event">
+            <div class="package-left">
+              <div class="radio-dot"></div>
+              <div class="package-info">
+                <div class="package-title">Event Only</div>
+                <div class="package-desc">Weekly Game Entry only</div>
+              </div>
+            </div>
+            <div class="package-price">$10</div>
+          </label>
+        </div>
+
+      </div>
+      <div class="error-msg" id="err-package">Please select a package.</div>
+
+      <!-- Stripe note -->
+      <div class="stripe-note">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+        </svg>
+        Payments are processed securely via Stripe. You'll be redirected to complete payment.
+      </div>
+
+      <!-- Submit -->
+      <button class="submit-btn" id="submit-btn" onclick="handleSubmit()">
+        <span>Proceed to Payment</span>
+        <span class="submit-amount" id="submit-amount">$—</span>
+      </button>
+
+    </div><!-- /signup-form -->
+
+    <!-- Confirmation -->
+    <div id="confirmation-page">
+      <div class="check-circle">
+        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <div class="confirm-title">You're Signed Up!</div>
+      <div class="confirm-subtitle">Your registration has been submitted.<br>See you on the course.</div>
+      <div class="confirm-summary" id="confirm-summary"></div>
+      <button class="new-signup-btn" onclick="resetForm()">Sign up another player</button>
+    </div>
+
+  </div><!-- /card -->
+
+  <!-- Footer -->
+  <div style="text-align:center;margin-top:20px;font-size:11px;color:rgba(255,255,255,0.3);letter-spacing:0.06em">
+    RANDOLPH MEN'S CLUB · TUCSON CITY GOLF
+  </div>
+
+</div><!-- /page-wrap -->
+
+<script>
+  // ── Configuration ─────────────────────────────────────────────────────────
+  // Edit these values each week, or hook them to a backend/admin panel
+  const EVENT_CONFIG = {
+    clubName:    "Randolph Men's Club",
+    eventName:   "Sunday Stroke Play",
+    eventDate:   "Sunday, May 11, 2026",
+    course:      "Dell Urich Golf Course · Tucson, AZ",
+    startTime:   "7:50 AM",
+    director:    "John Benge",
+    // Replace with your real Stripe publishable key:
+    stripePublishableKey: "pk_test_REPLACE_WITH_YOUR_KEY",
+    // Replace with your backend endpoint that creates a Stripe Checkout Session:
+    checkoutEndpoint: "/api/create-checkout-session"
+  };
+
+  // ── Populate header ────────────────────────────────────────────────────────
+  document.getElementById('display-event-name').textContent = EVENT_CONFIG.eventName;
+  document.getElementById('display-event-date').textContent =
+    EVENT_CONFIG.eventDate + " · " + EVENT_CONFIG.course;
+  document.getElementById('display-start-time').textContent = "First Tee: " + EVENT_CONFIG.startTime;
+  document.getElementById('display-director').textContent   = "Tournament Director: " + EVENT_CONFIG.director;
+
+  // ── Update submit button amount live ──────────────────────────────────────
+  document.querySelectorAll('input[name="package"]').forEach(radio => {
+    radio.addEventListener('change', function() {
+      const price = this.getAttribute('data-price');
+      document.getElementById('submit-amount').textContent = '$' + price;
+      document.getElementById('err-package').style.display = 'none';
+    });
+  });
+
+  document.getElementById('player-select').addEventListener('change', function() {
+    if (this.value) document.getElementById('err-player').style.display = 'none';
+  });
+
+  // ── Form submit ────────────────────────────────────────────────────────────
+  function handleSubmit() {
+    const player  = document.getElementById('player-select').value;
+    const pkgEl   = document.querySelector('input[name="package"]:checked');
+    const notes   = document.getElementById('player-notes').value.trim();
+
+    let valid = true;
+
+    if (!player) {
+      document.getElementById('err-player').style.display = 'block';
+      valid = false;
+    }
+    if (!pkgEl) {
+      document.getElementById('err-package').style.display = 'block';
+      valid = false;
+    }
+    if (!valid) return;
+
+    const pkg   = pkgEl.value;
+    const price = pkgEl.getAttribute('data-price');
+    const label = pkgEl.getAttribute('data-label');
+
+    // ── In a real deployment: ──────────────────────────────────────────────
+    // 1. POST to your backend: { player, pkg, price, notes, eventName, eventDate }
+    // 2. Backend creates a Stripe Checkout Session and returns { url }
+    // 3. window.location.href = url  → Stripe hosted payment page
+    //
+    // Example backend call (uncomment when backend is ready):
+    //
+    // const btn = document.getElementById('submit-btn');
+    // btn.disabled = true;
+    // btn.querySelector('span:first-child').textContent = 'Redirecting…';
+    //
+    // fetch(EVENT_CONFIG.checkoutEndpoint, {
+    //   method: 'POST',
+    //   headers: { 'Content-Type': 'application/json' },
+    //   body: JSON.stringify({
+    //     playerName: player,
+    //     package: pkg,
+    //     packageLabel: label,
+    //     amountCents: parseInt(price) * 100,
+    //     notes: notes,
+    //     eventName: EVENT_CONFIG.eventName,
+    //     eventDate: EVENT_CONFIG.eventDate
+    //   })
+    // })
+    // .then(r => r.json())
+    // .then(data => { window.location.href = data.url; })
+    // .catch(() => { btn.disabled = false; alert('Error — please try again.'); });
+    //
+    // ── DEMO: show confirmation instead ───────────────────────────────────
+    showConfirmation(player, label, price, notes);
+  }
+
+  function showConfirmation(player, label, price, notes) {
+    // Build summary HTML
+    const rows = [
+      ['Player',     player],
+      ['Package',    label],
+      ['Event',      EVENT_CONFIG.eventName],
+      ['Date',       EVENT_CONFIG.eventDate],
+      ['First Tee',  EVENT_CONFIG.startTime],
+      ['Director',   EVENT_CONFIG.director],
+    ];
+    if (notes) rows.push(['Notes', notes]);
+
+    let html = rows.map(([k,v]) =>
+      `<div class="confirm-row"><span>${k}</span><span>${v}</span></div>`
+    ).join('');
+    html += `<div class="confirm-row total"><span>Amount Due</span><span>$${price}</span></div>`;
+
+    document.getElementById('confirm-summary').innerHTML = html;
+    document.getElementById('signup-form').style.display = 'none';
+    document.getElementById('confirmation-page').style.display = 'block';
+  }
+
+  function resetForm() {
+    document.getElementById('player-select').value = '';
+    document.querySelectorAll('input[name="package"]').forEach(r => r.checked = false);
+    document.getElementById('player-notes').value = '';
+    document.getElementById('submit-amount').textContent = '$—';
+    document.getElementById('confirmation-page').style.display = 'none';
+    document.getElementById('signup-form').style.display = 'block';
+  }
+</script>
+</body>
+</html>
